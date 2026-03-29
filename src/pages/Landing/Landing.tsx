@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslations } from 'use-intl'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -21,11 +22,11 @@ export function Landing({ onSubmit }: Props) {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="w-full max-w-sm space-y-8">
-        <div className="bg-card border border-border rounded-xl p-6 shadow-xs space-y-4">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            {t('title')}
-          </h1>
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-2xl">{t('title')}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="name">{t('nameLabel')}</Label>
             <Input
@@ -46,13 +47,13 @@ export function Landing({ onSubmit }: Props) {
               className="h-11"
             />
           </div>
-          <div className="flex justify-end">
-            <Button onClick={handleSubmit} disabled={!canSubmit}>
-              {t('join')}
-            </Button>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+        <CardFooter className="justify-end">
+          <Button onClick={handleSubmit} disabled={!canSubmit}>
+            {t('join')}
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

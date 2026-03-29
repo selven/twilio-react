@@ -1,5 +1,7 @@
 import { useTranslations } from 'use-intl'
 import { Hand, Mic, MicOff, Video as VideoIcon, VideoOff, PhoneOff, Wallpaper } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 import { ControlButton } from '@/components/ControlButton/ControlButton'
 import type { RoomState } from '@/hooks/useRoom/useRoom'
 
@@ -37,7 +39,7 @@ export function TopBar({
         <span className="text-sm font-medium text-foreground truncate">{roomName}</span>
 
         {state === 'reconnecting' && (
-          <span className="text-xs text-muted-foreground">{t('reconnecting')}</span>
+          <Badge variant="secondary">{t('reconnecting')}</Badge>
         )}
 
         <div className="flex items-center gap-1.5">
@@ -73,7 +75,7 @@ export function TopBar({
             <Hand className="w-4 h-4" />
           </ControlButton>
 
-          <div className="w-px h-5 bg-border mx-1" />
+          <Separator orientation="vertical" className="h-5 mx-1 mt-2" />
 
           <ControlButton label={t('leaveCall')} onClick={onLeave} destructive>
             <PhoneOff className="w-4 h-4" />

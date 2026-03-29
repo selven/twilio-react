@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslations } from 'use-intl'
 import type { LocalParticipant, RemoteParticipant } from 'twilio-video'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { useRoom } from '@/hooks/useRoom/useRoom'
 import { useLocalTracks } from '@/hooks/useLocalTracks/useLocalTracks'
@@ -130,7 +131,11 @@ export function Viewer({ name, roomName, onLeave }: Props) {
               )}
             </div>
 
-            {error && <p className="text-destructive text-xs text-center">{error.message}</p>}
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error.message}</AlertDescription>
+              </Alert>
+            )}
           </div>
         </div>
       </div>
