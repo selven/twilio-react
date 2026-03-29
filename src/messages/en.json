@@ -1,0 +1,26 @@
+{
+  "Landing": {
+    "title": "Join the Stream",
+    "nameLabel": "Your name",
+    "join": "Join"
+  },
+  "Viewer": {
+    "preparingCamera": "Preparing camera\u2026",
+    "connecting": "Connecting to room\u2026"
+  },
+  "TopBar": {
+    "unmuteMic": "Unmute mic",
+    "muteMic": "Mute mic",
+    "startVideo": "Start video",
+    "stopVideo": "Stop video",
+    "removeBlur": "Remove blur",
+    "blurBackground": "Blur background",
+    "lowerHand": "Lower hand",
+    "raiseHand": "Raise hand",
+    "leaveCall": "Leave call",
+    "reconnecting": "Reconnecting\u2026"
+  },
+  "Tile": {
+    "you": "you"
+  }
+}
