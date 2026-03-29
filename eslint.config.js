@@ -22,6 +22,12 @@ export default defineConfig([
     },
   },
   {
+    files: ['src/**/*.test.{ts,tsx}', 'src/test/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
     files: ['src/**/*.{ts,tsx}'],
     ignores: ['src/components/ui/**', 'src/**/*.test.{ts,tsx}', 'src/messages/**'],
     plugins: { i18next },

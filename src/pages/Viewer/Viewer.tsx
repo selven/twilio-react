@@ -47,7 +47,7 @@ export function Viewer({ name, roomName, onLeave }: Props) {
       cancelled = true
       disconnect()
     }
-  }, [name, connect, disconnect, isAcquiring])
+  }, [name, roomName, connect, disconnect, isAcquiring])
 
   function handleLeave() {
     disconnect()
@@ -75,7 +75,7 @@ export function Viewer({ name, roomName, onLeave }: Props) {
   }
 
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delay={300}>
       <div className="min-h-screen bg-background flex flex-col">
         <TopBar
           roomName={roomName}

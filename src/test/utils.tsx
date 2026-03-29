@@ -4,7 +4,7 @@ import { IntlProvider } from 'use-intl'
 import messages from '../messages/en.json'
 
 function Providers({ children }: { children: React.ReactNode }) {
-  return React.createElement(IntlProvider, { locale: 'en', messages }, children)
+  return <IntlProvider locale="en" messages={messages}>{children}</IntlProvider>
 }
 
 function customRender(ui: React.ReactElement, options?: RenderOptions) {
