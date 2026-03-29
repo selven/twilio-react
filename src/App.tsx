@@ -2,12 +2,17 @@ import { useState } from 'react'
 import { Landing } from '@/pages/Landing/Landing'
 import { Viewer } from '@/pages/Viewer/Viewer'
 
-function App() {
-  const [name, setName] = useState<string | null>(null)
+interface Session {
+  name: string
+  roomName: string
+}
 
-  return name
-    ? <Viewer name={name} onLeave={() => setName(null)} />
-    : <Landing onSubmit={setName} />
+function App() {
+  const [session, setSession] = useState<Session | null>(null)
+
+  return session
+    ? <Viewer name={session.name} roomName={session.roomName} onLeave={() => setSession(null)} />
+    : <Landing onSubmit={(name, roomName) => setSession({ name, roomName })} />
 }
 
 export default App

@@ -1,75 +1,78 @@
-# React + TypeScript + Vite
+# Twilio Video Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time video calling app built with React and the Twilio Video SDK.
 
-Currently, two official plugins are available:
+## Getting started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Install dependencies**
 
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm i
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Create a `.env.local` file** in the project root:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+VITE_TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+VITE_TWILIO_API_KEY_SID=SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+VITE_TWILIO_API_SECRET=your_api_secret
 ```
+
+You can find these in the [Twilio Console](https://console.twilio.com). The API key and secret are created under **Account → API keys & tokens**.
+
+**Start the dev server**
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:5173](http://localhost:5173), enter your name and a room name, and join.
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Type-check and build for production |
+| `pnpm test` | Run tests |
+| `pnpm lint` | Run ESLint |
+
+## Features
+
+- Join any named room with a display name
+- Dominant speaker is shown in the main tile; others appear as thumbnails
+- Mute/unmute audio and video
+- Background blur
+- Raise hand to signal you want to speak
+- Leave and return to the lobby
+
+## Time spent
+
+3–4 hours.
+
+## What I'd add with more time
+
+- **More extensions** — screen sharing, audio level indicators, camera/mic switching
+- **Hook-level tests** — the custom Twilio hooks (`useRoom`, `useLocalTracks`, etc.) are currently only covered indirectly through component tests; dedicated unit tests with a mocked SDK would give tighter coverage
+- **Dark mode** — the design system is set up for it (CSS variables via Tailwind), it just needs a theme toggle
+
+## Technical choices
+
+**Vite over a full framework** — Next.js or Remix would be overkill for a single-page app with no server-side rendering requirements. Vite gives fast HMR and a minimal build setup without the overhead.
+
+**Hooks for SDK integration** — all Twilio SDK interactions live in dedicated hooks (`useRoom`, `useLocalTracks`, `useParticipants`, etc.). This keeps components declarative and makes the SDK behaviour independently testable.
+
+**`useSyncExternalStore` for Twilio events** — rather than subscribing to SDK events inside `useEffect` and copying state, the hooks that track participants and publications use `useSyncExternalStore`. This is the correct React 18 primitive for subscribing to external event sources and avoids a class of stale-state bugs.
+
+**React Compiler** — enabled via `babel-plugin-react-compiler`, so memoisation is handled automatically rather than scattered `useMemo`/`useCallback` calls.
+
+**Internationalisation** — all UI strings live in `src/messages/en.json` and are accessed via `use-intl`. This is enforced by an ESLint rule that disallows hard-coded string literals in component files, so adding a new language is a matter of dropping in a new messages file.
+
+**Folder structure** — code is split into `pages/`, `components/`, `hooks/`, and `lib/`. Pages own the top-level layout and orchestrate hooks; components are purely presentational; hooks encapsulate all side effects and SDK subscriptions.
+
+## Making this production-ready
+
+- **Move token generation to a backend** — the Twilio API secret is currently embedded in the client bundle (as a `VITE_*` environment variable). In production, token generation should happen on a server and the client should fetch a short-lived token over HTTPS.
+- **Test on more browsers and devices** — only tested in Chrome. WebRTC behaviour, camera/mic permissions, and CSS layout all vary across browsers and mobile devices.
+- **Error recovery** — add retry logic for failed connections and user-friendly messaging for permission-denied errors (camera/mic blocked).
+- **Room access control** — currently anyone who knows a room name can join. A real deployment would authenticate users and validate room access server-side before issuing a token.

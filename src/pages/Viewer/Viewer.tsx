@@ -14,14 +14,13 @@ import { RemoteTile } from '@/components/RemoteTile/RemoteTile'
 import { RemoteAudio } from '@/components/RemoteAudio/RemoteAudio'
 import { generateTwilioToken } from '@/lib/twilioToken'
 
-const ROOM_NAME = import.meta.env.VITE_ROOM_NAME as string
-
 interface Props {
   name: string
+  roomName: string
   onLeave: () => void
 }
 
-export function Viewer({ name, onLeave }: Props) {
+export function Viewer({ name, roomName, onLeave }: Props) {
   const t = useTranslations('Viewer')
   const { localTracks, videoTrack, dataTrack, isAudioMuted, isVideoOff, isAcquiring, toggleAudio, toggleVideo } = useLocalTracks()
   const { room, state, error, connect, disconnect } = useRoom()
@@ -40,8 +39,8 @@ export function Viewer({ name, onLeave }: Props) {
   useEffect(() => {
     if (isAcquiring) return
     let cancelled = false
-    generateTwilioToken(name, ROOM_NAME)
-      .then(token => { if (!cancelled) return connect(token, ROOM_NAME, localTracksRef.current) })
+    generateTwilioToken(name, roomName)
+      .then(token => { if (!cancelled) return connect(token, roomName, localTracksRef.current) })
       .catch(console.error)
     return () => {
       cancelled = true
@@ -78,7 +77,7 @@ export function Viewer({ name, onLeave }: Props) {
     <TooltipProvider delayDuration={300}>
       <div className="min-h-screen bg-background flex flex-col">
         <TopBar
-          roomName={ROOM_NAME}
+          roomName={roomName}
           state={state}
           isAudioMuted={isAudioMuted}
           isVideoOff={isVideoOff}

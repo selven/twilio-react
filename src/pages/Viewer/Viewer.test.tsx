@@ -67,8 +67,8 @@ beforeEach(() => {
   mockGenerateToken.mockResolvedValue('mock-token')
 })
 
-function renderViewer(props: { name?: string; onLeave?: () => void } = {}) {
-  return render(<Viewer name={props.name ?? 'Alice'} onLeave={props.onLeave ?? vi.fn()} />)
+function renderViewer(props: { name?: string; roomName?: string; onLeave?: () => void } = {}) {
+  return render(<Viewer name={props.name ?? 'Alice'} roomName={props.roomName ?? 'test-room'} onLeave={props.onLeave ?? vi.fn()} />)
 }
 
 describe('<Viewer />', () => {

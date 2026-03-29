@@ -2,6 +2,7 @@
   "Landing": {
     "title": "Join the Stream",
     "nameLabel": "Your name",
+    "roomLabel": "Room name",
     "join": "Join"
   },
   "Viewer": {

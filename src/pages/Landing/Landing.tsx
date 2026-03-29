@@ -5,17 +5,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 interface Props {
-  onSubmit: (name: string) => void
+  onSubmit: (name: string, roomName: string) => void
 }
 
 export function Landing({ onSubmit }: Props) {
   const t = useTranslations('Landing')
   const [name, setName] = useState('')
+  const [roomName, setRoomName] = useState('')
 
-  const canSubmit = name.length >= 2
+  const canSubmit = name.trim().length >= 2 && roomName.trim().length >= 2
 
   function handleSubmit() {
-    if (canSubmit) onSubmit(name.trim())
+    if (canSubmit) onSubmit(name.trim(), roomName.trim())
   }
 
   return (
@@ -35,7 +36,16 @@ export function Landing({ onSubmit }: Props) {
               className="h-11"
             />
           </div>
-
+          <div className="space-y-1.5">
+            <Label htmlFor="room">{t('roomLabel')}</Label>
+            <Input
+              id="room"
+              value={roomName}
+              onChange={e => setRoomName(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+              className="h-11"
+            />
+          </div>
           <div className="flex justify-end">
             <Button onClick={handleSubmit} disabled={!canSubmit}>
               {t('join')}
